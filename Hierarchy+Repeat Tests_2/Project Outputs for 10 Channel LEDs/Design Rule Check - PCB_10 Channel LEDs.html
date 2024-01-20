@@ -1,0 +1,722 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<style type="text/css">
+		h1, h2, h3, h4, h5, h6 {
+			font-family : sans-serif;
+			color : white;
+			background-color : #21489e;
+			padding: 0.3em;
+		}
+		body {
+			font-family : verdana;
+		}
+		td, th {
+			padding: 0.5em;
+			text-align : center;
+			width : 18%;
+		}
+		th {
+			background-color : #A6CAF0;
+
+		}
+		th.column1, td.column1 {
+			text-align: left;
+			width : auto;
+		}
+		table {
+			width : 100%;
+		}
+		
+		.DRC_summary_header {							
+			padding-bottom : 0.1em;
+			border : 0px solid black;							
+			width: 100%;
+                        align: right;
+                        
+		}
+
+		.DRC_summary_header_col1, 
+		.DRC_summary_header_col2, 
+		.DRC_summary_header_col3
+		{
+			color : black;
+			font-size:150%;
+                        padding : 0em;
+			padding-top : 0.2em;
+			padding-bottom 0.2: 0em;
+			border : 0px solid black;
+			width : auto;
+			vertical-align: top;
+			font-weight: bold;				
+		}
+		
+		.DRC_summary_header_col1 	
+		{		                       
+			text-align: right;
+                        width: auto;	
+		}
+
+		.DRC_summary_header_col2 	
+		{		
+			text-align: center;	
+		}
+
+		.DRC_summary_header_col3 	
+		{		
+			text-align: left;	
+		}
+
+
+		
+		.header_holder
+		{
+		Width = 100%;
+		border = 0px solid green;
+		padding = 0;
+		}
+		
+		
+		
+		.front_matter, .front_matter_column1, .front_matter_column2, .front_matter_column3
+                {
+			left:0;
+			top:0;
+			padding-top : 0.1em;			
+			border : 0px solid black;
+			width : 100%;
+			vertical-align: top
+
+		}
+		.front_matter {	
+			
+			margin-top: 5px;
+ 			margin-left: 0px;					 			
+ 			horizontal-align: left;
+		}
+				
+		
+		.front_matter_column1 {
+			width : 10em;	
+			text-align  : right;
+			padding-right:0.1em;
+			
+		}
+		
+		.front_matter_column2 {
+                        width: 0.1em;
+			align: center;
+			text-align : center;
+			margin-right  : 0.1em;	
+			margin-left   : 0.1em;
+		}
+		.front_matter_column3 {
+			width         : auto;  
+			text-align    : left;	
+			margin-right  : 0.5em;				
+		}
+		
+		.total_column1, .total_column {
+			font-weight : bold;
+		}
+		.total_column1 {
+			text-align : right;
+		}
+		.warning, .error {
+			color : red;
+			font-weight : bold;
+		}
+		tr.onmouseout_odd {
+			background-color : #EEEEE0 
+		}
+		tr.onmouseout_even { 
+			background-color : #F3F3E3   
+		}
+		tr.onmouseover_odd, tr.onmouseover_even { 
+			background-color : lightYellow
+		} 
+		a:link, a:visited, .q a:link,.q a:active,.q {
+			color: #21489e; 
+		}
+		a:link.callback, a:visited.callback { 
+			color: #008000 
+		}
+		a:link.customize, a:visited.customize {
+			color: #C0C0C0;
+			position: absolute; 
+			right: 10px;
+		}	
+		p.contents_level1 {
+			font-weight : bold;
+			font-size : 110%;
+			margin : 0.5em;
+		}
+		p.contents_level2 {
+			position : relative;
+			left : 20px;
+			margin : 0.5em;
+		}
+	</style><script type="text/javascript">
+		function coordToMils(coord) {
+			var number = coord / 10000;
+			
+			if (number != number.toFixed(3))
+				number = number.toFixed(3);
+
+			return number + 'mil'
+		}
+
+		function coordToMM(coord) {
+			var number = 0.0254 * coord / 10000;
+			
+			if (number != number.toFixed(4))
+				number = number.toFixed(4);
+			
+			return number + 'mm'
+		}
+	
+		function convertCoord(coordNode, units) {
+			for (var i = 0; i < coordNode.childNodes.length; i++) {
+				coordNode.removeChild(coordNode.childNodes[i]);
+			}
+
+			var coord = coordNode.getAttribute('value');
+			if (coord != null) {
+				if (units == 'mm') {
+					textNode = document.createTextNode(coordToMM(coord));
+					coordNode.appendChild(textNode);
+				} else if (units == 'mil') {
+					textNode = document.createTextNode(coordToMils(coord));		
+					coordNode.appendChild(textNode);	
+				}
+			}
+		}
+	
+		function convertUnits(unitNode, units) {
+			for (var i = 0; i < unitNode.childNodes.length; i++) {
+				unitNode.removeChild(unitNode.childNodes[i]);		
+			}
+		
+			textNode = document.createTextNode(units); 
+			unitNode.appendChild(textNode);
+		}
+	
+		function changeUnits(radio_input, units) {
+			if (radio_input.checked) {
+			
+				var elements = document.getElementsByName('coordinate');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertCoord(elements[i], units);
+					}
+				}
+	
+				var elements = document.getElementsByName('units');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertUnits(elements[i], units);
+					}
+				}
+			}
+		}
+	</script><title>Design Rule Verification Report</title>
+</head>
+<body onload=""><img ALT="Altium" src="
+			file://C:\Users\Public\Documents\Altium\AD15\Templates\AD-rgb_logo_223x64.gif
+		"><a href="dxpprocess://Client:SetupPreferences?Server=PCB|PageName=Reports" class="customize"><acronym title="dxpprocess://Client:SetupPreferences?Server=PCB|PageName=Reports">customize</acronym></a><h1>Design Rule Verification Report</h1>
+<table class="header_holder">
+<td Style="width:70%">
+<table class="front_matter">
+<tr class="front_matter">
+<td class="front_matter_column1">Date</td>
+<td class="front_matter_column2">:</td>
+<td class="front_matter_column3">4.9.2015 ?.</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Time</td>
+<td class="front_matter_column2">:</td>
+<td class="front_matter_column3">15:04:35</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Elapsed Time</td>
+<td class="front_matter_column2">:</td>
+<td class="front_matter_column3">00:00:00</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Filename</td>
+<td class="front_matter_column2">:</td>
+<td class="front_matter_column3"><a href="file:///C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc" class="file"><acronym title="C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc">C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc</acronym></a></td>
+</tr>
+</table>
+</td>
+<td Style="Width:30%">
+<table class="DRC_summary_header">
+<tr>
+<td class="DRC_summary_header_col1">Warnings</td>
+<td class="DRC_summary_header_col2">:</td>
+<td class="DRC_summary_header_col3">0</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Rule Violations</td>
+<td class="DRC_summary_header_col2">:</td>
+<td class="DRC_summary_header_col3" style="color : red">94</td></tr>
+</table>
+</td>
+</table>
+<hr><a name="IDASAA4B"><h2>Summary</h2></a><table>
+<tr>
+<th class="column1">Warnings</th>
+<th class="column2">Count</th>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">0</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Rule Violations</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAEBA4B">Clearance Constraint (Gap=0.508mm) (InComponentClass('Ballast Rs')),(InNet('+12V'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDAKBA4B">Room Con (Bounding Region = (20.955mm, 60.452mm, 30.734mm, 94.488mm) (InComponentClass('Con'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAQBA4B">Room Ch10 (Bounding Region = (53.34mm, 26.543mm, 78.486mm, 35.306mm) (InComponentClass('Ch10'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDAWBA4B">Room Ch9 (Bounding Region = (53.34mm, 36.576mm, 78.486mm, 45.339mm) (InComponentClass('Ch9'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDA2BA4B">Room Ch8 (Bounding Region = (53.34mm, 46.736mm, 78.486mm, 55.499mm) (InComponentClass('Ch8'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDACCA4B">Room Ch7 (Bounding Region = (53.34mm, 56.642mm, 78.486mm, 65.405mm) (InComponentClass('Ch7'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAICA4B">Room Ch6 (Bounding Region = (53.34mm, 66.548mm, 78.486mm, 75.311mm) (InComponentClass('Ch6'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDAOCA4B">Room Ch5 (Bounding Region = (53.34mm, 76.454mm, 78.486mm, 85.217mm) (InComponentClass('Ch5'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAUCA4B">Room Ch4 (Bounding Region = (53.34mm, 86.36mm, 78.486mm, 95.123mm) (InComponentClass('Ch4'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDA0CA4B">Room Ch3 (Bounding Region = (53.34mm, 96.52mm, 78.486mm, 105.283mm) (InComponentClass('Ch3'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAADA4B">Room Ch2 (Bounding Region = (53.34mm, 106.426mm, 78.486mm, 115.189mm) (InComponentClass('Ch2'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDAGDA4B">Room Ch1 (Bounding Region = (53.34mm, 116.459mm, 78.486mm, 125.222mm) (InComponentClass('Ch1'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAMDA4B">Modified Polygon (Allow modified: No), (Allow shelved: No)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDASDA4B">Net Antennae (Tolerance=0mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAYDA4B">Silk primitive without silk layer</a></td>
+<td class="column2">54</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDAFWA4B">Silk to Silk (Clearance=0.254mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDALWA4B">Silk To Solder Mask (Clearance=0.254mm) (IsPad),(All)</a></td>
+<td class="column2">40</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDA5RB4B">Minimum Solder Mask Sliver (Gap=0.254mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAFSB4B">Hole To Hole Clearance (Gap=0.254mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDALSB4B">Hole Size Constraint (Min=0.025mm) (Max=2.54mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDARSB4B">Height Constraint (Min=0mm) (Max=25.4mm) (Prefered=12.7mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDAXSB4B">Width Constraint (Min=0.254mm) (Max=0.254mm) (Preferred=0.254mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDA3SB4B">Power Plane Connect Rule(Relief Connect )(Expansion=0.508mm) (Conductor Width=0.254mm) (Air Gap=0.254mm) (Entries=4) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDADTB4B">Clearance Constraint (Gap=0.254mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAJTB4B">Un-Routed Net Constraint ( (All) )</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDAPTB4B">Short-Circuit Constraint (Allowed=No) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDAVTB4B">Clearance Constraint (Gap=0.508mm) (InComponentClass('LEDs')),(InNet('+12V'))</a></td>
+<td class="column2">0</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">94</td>
+</tr>
+</table><br><hr><a name="IDAYDA4B"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Silk primitive without silk layer</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=1138.721mil|Location2.Y=1181.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=1138.721mil|Location2.Y=1181.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,29.464mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=1533.721mil|Location2.Y=1576.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=1533.721mil|Location2.Y=1576.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,39.497mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=1933.721mil|Location2.Y=1976.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=1933.721mil|Location2.Y=1976.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,49.657mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=2323.721mil|Location2.Y=2366.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=2323.721mil|Location2.Y=2366.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,59.563mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=2713.721mil|Location2.Y=2756.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=2713.721mil|Location2.Y=2756.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,69.469mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=3103.721mil|Location2.Y=3146.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=3103.721mil|Location2.Y=3146.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,79.375mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=3493.721mil|Location2.Y=3536.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=3493.721mil|Location2.Y=3536.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,89.281mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=3893.721mil|Location2.Y=3936.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=3893.721mil|Location2.Y=3936.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,99.441mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=4283.721mil|Location2.Y=4326.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=4283.721mil|Location2.Y=4326.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,109.347mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=4678.721mil|Location2.Y=4721.279mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3013.8mil|Location2.X=3084.688mil|Location1.Y=4678.721mil|Location2.Y=4721.279mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Arc (76.366mm,119.38mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3484.014mil|Location2.Y=3579.318mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3484.014mil|Location2.Y=3579.318mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,89.704mm)(25.4mm,89.704mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3514.569mil|Location2.Y=3532.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3514.569mil|Location2.Y=3532.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,89.281mm)(22.013mm,89.704mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3497.903mil|Location2.Y=3515.43mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3497.903mil|Location2.Y=3515.43mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,89.281mm)(22.013mm,88.858mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3450.681mil|Location2.Y=3545.985mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3450.681mil|Location2.Y=3545.985mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,88.858mm)(25.4mm,88.858mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3384.014mil|Location2.Y=3479.318mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3384.014mil|Location2.Y=3479.318mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,87.164mm)(25.4mm,87.164mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3414.569mil|Location2.Y=3432.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3414.569mil|Location2.Y=3432.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,86.741mm)(22.013mm,87.164mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3397.903mil|Location2.Y=3415.43mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3397.903mil|Location2.Y=3415.43mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,86.741mm)(22.013mm,86.318mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3350.681mil|Location2.Y=3445.985mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3350.681mil|Location2.Y=3445.985mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,86.318mm)(25.4mm,86.318mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3284.014mil|Location2.Y=3379.318mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3284.014mil|Location2.Y=3379.318mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,84.624mm)(25.4mm,84.624mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3314.569mil|Location2.Y=3332.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3314.569mil|Location2.Y=3332.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,84.201mm)(22.013mm,84.624mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3297.903mil|Location2.Y=3315.43mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3297.903mil|Location2.Y=3315.43mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,84.201mm)(22.013mm,83.778mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3250.681mil|Location2.Y=3345.985mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3250.681mil|Location2.Y=3345.985mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,83.778mm)(25.4mm,83.778mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3184.014mil|Location2.Y=3279.318mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3184.014mil|Location2.Y=3279.318mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,82.084mm)(25.4mm,82.084mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3214.569mil|Location2.Y=3232.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3214.569mil|Location2.Y=3232.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,81.661mm)(22.013mm,82.084mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3197.903mil|Location2.Y=3215.43mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3197.903mil|Location2.Y=3215.43mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,81.661mm)(22.013mm,81.238mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3150.681mil|Location2.Y=3245.985mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3150.681mil|Location2.Y=3245.985mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,81.238mm)(25.4mm,81.238mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3084.014mil|Location2.Y=3179.318mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3084.014mil|Location2.Y=3179.318mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,79.544mm)(25.4mm,79.544mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3114.569mil|Location2.Y=3132.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3114.569mil|Location2.Y=3132.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,79.121mm)(22.013mm,79.544mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3097.903mil|Location2.Y=3115.43mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3097.903mil|Location2.Y=3115.43mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,79.121mm)(22.013mm,78.698mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3050.681mil|Location2.Y=3145.985mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=3050.681mil|Location2.Y=3145.985mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,78.698mm)(25.4mm,78.698mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2984.014mil|Location2.Y=3079.318mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2984.014mil|Location2.Y=3079.318mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,77.004mm)(25.4mm,77.004mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3014.569mil|Location2.Y=3032.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=3014.569mil|Location2.Y=3032.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,76.581mm)(22.013mm,77.004mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2997.903mil|Location2.Y=3015.431mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2997.903mil|Location2.Y=3015.431mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,76.581mm)(22.013mm,76.158mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2950.682mil|Location2.Y=3045.986mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2950.682mil|Location2.Y=3045.986mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,76.158mm)(25.4mm,76.158mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2884.015mil|Location2.Y=2979.319mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2884.015mil|Location2.Y=2979.319mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,74.464mm)(25.4mm,74.464mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2914.57mil|Location2.Y=2932.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2914.57mil|Location2.Y=2932.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,74.041mm)(22.013mm,74.464mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2897.903mil|Location2.Y=2915.431mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2897.903mil|Location2.Y=2915.431mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,74.041mm)(22.013mm,73.618mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2850.682mil|Location2.Y=2945.986mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2850.682mil|Location2.Y=2945.986mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,73.618mm)(25.4mm,73.618mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2784.015mil|Location2.Y=2879.319mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2784.015mil|Location2.Y=2879.319mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,71.924mm)(25.4mm,71.924mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2814.57mil|Location2.Y=2832.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2814.57mil|Location2.Y=2832.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,71.501mm)(22.013mm,71.924mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2797.903mil|Location2.Y=2815.431mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2797.903mil|Location2.Y=2815.431mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,71.501mm)(22.013mm,71.078mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2750.682mil|Location2.Y=2845.986mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2750.682mil|Location2.Y=2845.986mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,71.078mm)(25.4mm,71.078mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2684.015mil|Location2.Y=2779.319mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2684.015mil|Location2.Y=2779.319mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,69.384mm)(25.4mm,69.384mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2714.57mil|Location2.Y=2732.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2714.57mil|Location2.Y=2732.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,68.961mm)(22.013mm,69.384mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2697.903mil|Location2.Y=2715.431mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2697.903mil|Location2.Y=2715.431mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,68.961mm)(22.013mm,68.538mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2650.682mil|Location2.Y=2745.986mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2650.682mil|Location2.Y=2745.986mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,68.538mm)(25.4mm,68.538mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2584.015mil|Location2.Y=2679.319mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2584.015mil|Location2.Y=2679.319mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,66.844mm)(25.4mm,66.844mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2614.57mil|Location2.Y=2632.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2614.57mil|Location2.Y=2632.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,66.421mm)(22.013mm,66.844mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2597.903mil|Location2.Y=2615.431mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2597.903mil|Location2.Y=2615.431mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,66.421mm)(22.013mm,65.998mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2550.682mil|Location2.Y=2645.986mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2550.682mil|Location2.Y=2645.986mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,65.998mm)(25.4mm,65.998mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2484.015mil|Location2.Y=2579.319mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2484.015mil|Location2.Y=2579.319mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,64.304mm)(25.4mm,64.304mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2514.57mil|Location2.Y=2532.097mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2514.57mil|Location2.Y=2532.097mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,63.881mm)(22.013mm,64.304mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2497.903mil|Location2.Y=2515.431mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=849.57mil|Location2.X=895.427mil|Location1.Y=2497.903mil|Location2.Y=2515.431mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (21.59mm,63.881mm)(22.013mm,63.458mm)  Top Overlay</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2450.682mil|Location2.Y=2545.986mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=885.681mil|Location2.X=1009.316mil|Location1.Y=2450.682mil|Location2.Y=2545.986mil|Absolute=True">Silk To Board Region Clearance (Out of silkscreen region) : Track (22.013mm,63.458mm)(25.4mm,63.458mm)  Top Overlay</acronym></a><br></td>
+</tr>
+</table></a><a href="#top">Back to top</a><br><br><a name="IDALWA4B"><table>
+<tr>
+<th style="text-align : left" colspan="2" class="rule">Silk To Solder Mask (Clearance=0.254mm) (IsPad),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=1106.063mil|Location2.Y=1113.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=1106.063mil|Location2.Y=1113.937mil|Absolute=True">Track (55.753mm,28.194mm)(56.769mm,28.194mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=1078.441mil|Location2.Y=1141.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=1078.441mil|Location2.Y=1141.559mil|Absolute=True">Pad R1_10-1(54.737mm,28.194mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=1106.063mil|Location2.Y=1113.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=1106.063mil|Location2.Y=1113.937mil|Absolute=True">Track (62.865mm,28.194mm)(63.881mm,28.194mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=1078.441mil|Location2.Y=1141.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=1078.441mil|Location2.Y=1141.559mil|Absolute=True">Pad R1_10-2(64.897mm,28.194mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=1501.063mil|Location2.Y=1508.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=1501.063mil|Location2.Y=1508.937mil|Absolute=True">Track (55.753mm,38.227mm)(56.769mm,38.227mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=1473.441mil|Location2.Y=1536.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=1473.441mil|Location2.Y=1536.559mil|Absolute=True">Pad R1_9-1(54.737mm,38.227mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=1501.063mil|Location2.Y=1508.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=1501.063mil|Location2.Y=1508.937mil|Absolute=True">Track (62.865mm,38.227mm)(63.881mm,38.227mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=1473.441mil|Location2.Y=1536.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=1473.441mil|Location2.Y=1536.559mil|Absolute=True">Pad R1_9-2(64.897mm,38.227mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=1901.063mil|Location2.Y=1908.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=1901.063mil|Location2.Y=1908.937mil|Absolute=True">Track (55.753mm,48.387mm)(56.769mm,48.387mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=1873.441mil|Location2.Y=1936.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=1873.441mil|Location2.Y=1936.559mil|Absolute=True">Pad R1_8-1(54.737mm,48.387mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=1901.063mil|Location2.Y=1908.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=1901.063mil|Location2.Y=1908.937mil|Absolute=True">Track (62.865mm,48.387mm)(63.881mm,48.387mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=1873.441mil|Location2.Y=1936.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=1873.441mil|Location2.Y=1936.559mil|Absolute=True">Pad R1_8-2(64.897mm,48.387mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=2291.063mil|Location2.Y=2298.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=2291.063mil|Location2.Y=2298.937mil|Absolute=True">Track (55.753mm,58.293mm)(56.769mm,58.293mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=2263.441mil|Location2.Y=2326.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=2263.441mil|Location2.Y=2326.559mil|Absolute=True">Pad R1_7-1(54.737mm,58.293mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=2291.063mil|Location2.Y=2298.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=2291.063mil|Location2.Y=2298.937mil|Absolute=True">Track (62.865mm,58.293mm)(63.881mm,58.293mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=2263.441mil|Location2.Y=2326.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=2263.441mil|Location2.Y=2326.559mil|Absolute=True">Pad R1_7-2(64.897mm,58.293mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=2681.063mil|Location2.Y=2688.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=2681.063mil|Location2.Y=2688.937mil|Absolute=True">Track (55.753mm,68.199mm)(56.769mm,68.199mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=2653.441mil|Location2.Y=2716.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=2653.441mil|Location2.Y=2716.559mil|Absolute=True">Pad R1_6-1(54.737mm,68.199mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=2681.063mil|Location2.Y=2688.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=2681.063mil|Location2.Y=2688.937mil|Absolute=True">Track (62.865mm,68.199mm)(63.881mm,68.199mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=2653.441mil|Location2.Y=2716.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=2653.441mil|Location2.Y=2716.559mil|Absolute=True">Pad R1_6-2(64.897mm,68.199mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=3071.063mil|Location2.Y=3078.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=3071.063mil|Location2.Y=3078.937mil|Absolute=True">Track (55.753mm,78.105mm)(56.769mm,78.105mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=3043.441mil|Location2.Y=3106.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=3043.441mil|Location2.Y=3106.559mil|Absolute=True">Pad R1_5-1(54.737mm,78.105mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=3071.063mil|Location2.Y=3078.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=3071.063mil|Location2.Y=3078.937mil|Absolute=True">Track (62.865mm,78.105mm)(63.881mm,78.105mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=3043.441mil|Location2.Y=3106.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=3043.441mil|Location2.Y=3106.559mil|Absolute=True">Pad R1_5-2(64.897mm,78.105mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=3461.063mil|Location2.Y=3468.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=3461.063mil|Location2.Y=3468.937mil|Absolute=True">Track (55.753mm,88.011mm)(56.769mm,88.011mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=3433.441mil|Location2.Y=3496.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=3433.441mil|Location2.Y=3496.559mil|Absolute=True">Pad R1_4-1(54.737mm,88.011mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=3461.063mil|Location2.Y=3468.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=3461.063mil|Location2.Y=3468.937mil|Absolute=True">Track (62.865mm,88.011mm)(63.881mm,88.011mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=3433.441mil|Location2.Y=3496.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=3433.441mil|Location2.Y=3496.559mil|Absolute=True">Pad R1_4-2(64.897mm,88.011mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=3861.063mil|Location2.Y=3868.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=3861.063mil|Location2.Y=3868.937mil|Absolute=True">Track (55.753mm,98.171mm)(56.769mm,98.171mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=3833.441mil|Location2.Y=3896.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=3833.441mil|Location2.Y=3896.559mil|Absolute=True">Pad R1_3-1(54.737mm,98.171mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=3861.063mil|Location2.Y=3868.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=3861.063mil|Location2.Y=3868.937mil|Absolute=True">Track (62.865mm,98.171mm)(63.881mm,98.171mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=3833.441mil|Location2.Y=3896.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=3833.441mil|Location2.Y=3896.559mil|Absolute=True">Pad R1_3-2(64.897mm,98.171mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=4251.063mil|Location2.Y=4258.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=4251.063mil|Location2.Y=4258.937mil|Absolute=True">Track (55.753mm,108.077mm)(56.769mm,108.077mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=4223.441mil|Location2.Y=4286.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=4223.441mil|Location2.Y=4286.559mil|Absolute=True">Pad R1_2-1(54.737mm,108.077mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=4251.063mil|Location2.Y=4258.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=4251.063mil|Location2.Y=4258.937mil|Absolute=True">Track (62.865mm,108.077mm)(63.881mm,108.077mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=4223.441mil|Location2.Y=4286.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=4223.441mil|Location2.Y=4286.559mil|Absolute=True">Pad R1_2-2(64.897mm,108.077mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=4646.063mil|Location2.Y=4653.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2191.063mil|Location2.X=2238.937mil|Location1.Y=4646.063mil|Location2.Y=4653.937mil|Absolute=True">Track (55.753mm,118.11mm)(56.769mm,118.11mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=4618.441mil|Location2.Y=4681.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2123.441mil|Location2.X=2186.559mil|Location1.Y=4618.441mil|Location2.Y=4681.559mil|Absolute=True">Pad R1_1-1(54.737mm,118.11mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=4646.063mil|Location2.Y=4653.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2471.063mil|Location2.X=2518.937mil|Location1.Y=4646.063mil|Location2.Y=4653.937mil|Absolute=True">Track (62.865mm,118.11mm)(63.881mm,118.11mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=4618.441mil|Location2.Y=4681.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2523.441mil|Location2.X=2586.559mil|Location1.Y=4618.441mil|Location2.Y=4681.559mil|Absolute=True">Pad R1_1-2(64.897mm,118.11mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1244.114mil|Location2.Y=1249.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1244.114mil|Location2.Y=1249.114mil|Absolute=True">Track (68.866mm,31.664mm)(75.266mm,31.664mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1174.504mil|Location2.Y=1245.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1174.504mil|Location2.Y=1245.496mil|Absolute=True">Pad D1_10-1(70.866mm,30.734mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1070.886mil|Location2.Y=1075.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1070.886mil|Location2.Y=1075.886mil|Absolute=True">Track (68.866mm,27.264mm)(75.266mm,27.264mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1074.504mil|Location2.Y=1145.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1074.504mil|Location2.Y=1145.496mil|Absolute=True">Pad D1_10-2(70.866mm,28.194mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1639.114mil|Location2.Y=1644.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1639.114mil|Location2.Y=1644.114mil|Absolute=True">Track (68.866mm,41.697mm)(75.266mm,41.697mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1569.504mil|Location2.Y=1640.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1569.504mil|Location2.Y=1640.496mil|Absolute=True">Pad D1_9-1(70.866mm,40.767mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1465.886mil|Location2.Y=1470.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1465.886mil|Location2.Y=1470.886mil|Absolute=True">Track (68.866mm,37.297mm)(75.266mm,37.297mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1469.504mil|Location2.Y=1540.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1469.504mil|Location2.Y=1540.496mil|Absolute=True">Pad D1_9-2(70.866mm,38.227mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2039.114mil|Location2.Y=2044.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2039.114mil|Location2.Y=2044.114mil|Absolute=True">Track (68.866mm,51.857mm)(75.266mm,51.857mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1969.504mil|Location2.Y=2040.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1969.504mil|Location2.Y=2040.496mil|Absolute=True">Pad D1_8-1(70.866mm,50.927mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1865.886mil|Location2.Y=1870.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=1865.886mil|Location2.Y=1870.886mil|Absolute=True">Track (68.866mm,47.457mm)(75.266mm,47.457mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1869.504mil|Location2.Y=1940.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=1869.504mil|Location2.Y=1940.496mil|Absolute=True">Pad D1_8-2(70.866mm,48.387mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2429.114mil|Location2.Y=2434.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2429.114mil|Location2.Y=2434.114mil|Absolute=True">Track (68.866mm,61.763mm)(75.266mm,61.763mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=2359.504mil|Location2.Y=2430.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=2359.504mil|Location2.Y=2430.496mil|Absolute=True">Pad D1_7-1(70.866mm,60.833mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2255.886mil|Location2.Y=2260.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2255.886mil|Location2.Y=2260.886mil|Absolute=True">Track (68.866mm,57.363mm)(75.266mm,57.363mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=2259.504mil|Location2.Y=2330.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=2259.504mil|Location2.Y=2330.496mil|Absolute=True">Pad D1_7-2(70.866mm,58.293mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2819.114mil|Location2.Y=2824.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2819.114mil|Location2.Y=2824.114mil|Absolute=True">Track (68.866mm,71.669mm)(75.266mm,71.669mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=2749.504mil|Location2.Y=2820.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=2749.504mil|Location2.Y=2820.496mil|Absolute=True">Pad D1_6-1(70.866mm,70.739mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2645.886mil|Location2.Y=2650.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=2645.886mil|Location2.Y=2650.886mil|Absolute=True">Track (68.866mm,67.269mm)(75.266mm,67.269mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=2649.504mil|Location2.Y=2720.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=2649.504mil|Location2.Y=2720.496mil|Absolute=True">Pad D1_6-2(70.866mm,68.199mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3209.114mil|Location2.Y=3214.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3209.114mil|Location2.Y=3214.114mil|Absolute=True">Track (68.866mm,81.575mm)(75.266mm,81.575mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3139.504mil|Location2.Y=3210.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3139.504mil|Location2.Y=3210.496mil|Absolute=True">Pad D1_5-1(70.866mm,80.645mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3035.886mil|Location2.Y=3040.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3035.886mil|Location2.Y=3040.886mil|Absolute=True">Track (68.866mm,77.175mm)(75.266mm,77.175mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3039.504mil|Location2.Y=3110.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3039.504mil|Location2.Y=3110.496mil|Absolute=True">Pad D1_5-2(70.866mm,78.105mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3599.114mil|Location2.Y=3604.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3599.114mil|Location2.Y=3604.114mil|Absolute=True">Track (68.866mm,91.481mm)(75.266mm,91.481mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3529.504mil|Location2.Y=3600.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3529.504mil|Location2.Y=3600.496mil|Absolute=True">Pad D1_4-1(70.866mm,90.551mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3425.886mil|Location2.Y=3430.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3425.886mil|Location2.Y=3430.886mil|Absolute=True">Track (68.866mm,87.081mm)(75.266mm,87.081mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3429.504mil|Location2.Y=3500.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3429.504mil|Location2.Y=3500.496mil|Absolute=True">Pad D1_4-2(70.866mm,88.011mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3999.114mil|Location2.Y=4004.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3999.114mil|Location2.Y=4004.114mil|Absolute=True">Track (68.866mm,101.641mm)(75.266mm,101.641mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3929.504mil|Location2.Y=4000.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3929.504mil|Location2.Y=4000.496mil|Absolute=True">Pad D1_3-1(70.866mm,100.711mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3825.886mil|Location2.Y=3830.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=3825.886mil|Location2.Y=3830.886mil|Absolute=True">Track (68.866mm,97.241mm)(75.266mm,97.241mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3829.504mil|Location2.Y=3900.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=3829.504mil|Location2.Y=3900.496mil|Absolute=True">Pad D1_3-2(70.866mm,98.171mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=4389.114mil|Location2.Y=4394.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=4389.114mil|Location2.Y=4394.114mil|Absolute=True">Track (68.866mm,111.547mm)(75.266mm,111.547mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=4319.504mil|Location2.Y=4390.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=4319.504mil|Location2.Y=4390.496mil|Absolute=True">Pad D1_2-1(70.866mm,110.617mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=4215.886mil|Location2.Y=4220.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=4215.886mil|Location2.Y=4220.886mil|Absolute=True">Track (68.866mm,107.147mm)(75.266mm,107.147mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=4219.504mil|Location2.Y=4290.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=4219.504mil|Location2.Y=4290.496mil|Absolute=True">Pad D1_2-2(70.866mm,108.077mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=4784.114mil|Location2.Y=4789.114mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=4784.114mil|Location2.Y=4789.114mil|Absolute=True">Track (68.866mm,121.58mm)(75.266mm,121.58mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=4714.504mil|Location2.Y=4785.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=4714.504mil|Location2.Y=4785.496mil|Absolute=True">Pad D1_1-1(70.866mm,120.65mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td style="width:50%; text-align:left" class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=4610.886mil|Location2.Y=4615.886mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2708.76mil|Location2.X=2965.728mil|Location1.Y=4610.886mil|Location2.Y=4615.886mil|Absolute=True">Track (68.866mm,117.18mm)(75.266mm,117.18mm)  Top Overlay</acronym></a></td>
+<td style="width:50%; text-align:left" class="column2"><a href="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=4614.504mil|Location2.Y=4685.496mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2754.504mil|Location2.X=2825.496mil|Location1.Y=4614.504mil|Location2.Y=4685.496mil|Absolute=True">Pad D1_1-2(70.866mm,118.11mm)  Multi-Layer</acronym></a></td>
+</tr>
+</table></a><a href="#top">Back to top</a><br><br></body>
+</html>

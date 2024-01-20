@@ -1,0 +1,29 @@
+Net Status Report
+Filename     : C:\AHA\Altium Docs\CAD Files\My Tests Projects\Hierarchy+Repeat Tests_2\PCB_10 Channel LEDs.PcbDoc
+Date         : 8.9.2015 ?.
+Time         : 08:40:38
+Time Elapsed : 00:00:00
+
+Nets, Layer, Length
+    +12V, Signal Layers Only, 0mm
+    CAT1, Signal Layers Only, 39.9287mm
+    CAT10, Signal Layers Only, 49.3267mm
+    CAT2, Signal Layers Only, 35.6347mm
+    CAT3, Signal Layers Only, 32.5836mm
+    CAT4, Signal Layers Only, 29.4273mm
+    CAT5, Signal Layers Only, 27.2178mm
+    CAT6, Signal Layers Only, 30.2689mm
+    CAT7, Signal Layers Only, 33.32mm
+    CAT8, Signal Layers Only, 36.3711mm
+    CAT9, Signal Layers Only, 41.8337mm
+    NetD1_10_2, Signal Layers Only, 5.969mm
+    NetD1_1_2, Signal Layers Only, 5.969mm
+    NetD1_2_2, Signal Layers Only, 5.969mm
+    NetD1_3_2, Signal Layers Only, 5.969mm
+    NetD1_4_2, Signal Layers Only, 5.969mm
+    NetD1_5_2, Signal Layers Only, 5.969mm
+    NetD1_6_2, Signal Layers Only, 5.969mm
+    NetD1_7_2, Signal Layers Only, 5.969mm
+    NetD1_8_2, Signal Layers Only, 5.969mm
+    NetD1_9_2, Signal Layers Only, 5.969mm
+count : 21
